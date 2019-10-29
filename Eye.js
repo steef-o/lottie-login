@@ -13,7 +13,7 @@ class Eye {
         this.cy = (this.boundingBox.bottom + this.boundingBox.top) / 2; // X offset (Y start value of new origin)
 
         // 1 = full movement, 2 = half movement, 3 = one third movement, 4 = one forth movement, etc.
-        this.degreeOfMovement = 4;
+        this.degreeOfMovement = 3;
 
        /*
         // ------ EXTRA VALUES IF NEEDED -----
