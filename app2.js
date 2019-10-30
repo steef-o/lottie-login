@@ -65,20 +65,35 @@ monsterBody.addEventListener('DOMLoaded', function() {
     });
 
     username.addEventListener('keyup', function(e) {
-        // Play next frame.
-        monsterBody.playSegments(
-            [state.frameCountBody, (state.frameCountBody += 3)],
-            true
-        );
-        monsterEyelids.playSegments(
-            [state.frameCountEyelids, (state.frameCountEyelids += 3)],
-            true
-        );
-
         // Check if user inputs '@'
         if (e.key === 'AltGraph') {
             //Play happy mouth
             monsterMouth.playSegments([1, 2], true);
+        } else if (e.key === 'Backspace') {
+            if (state.frameCountBody >= 3) {
+                monsterBody.playSegments(
+                    [state.frameCountBody, (state.frameCountBody -= 3)],
+                    true
+                );
+            }
+            if (state.frameCountEyelids >= 3) {
+                monsterEyelids.playSegments(
+                    [state.frameCountEyelids, (state.frameCountEyelids -= 3)],
+                    true
+                );
+            }
+            console.log('eyelids', state.frameCountEyelids);
+            console.log('body', state.frameCountBody);
+        } else {
+            // Play next frame.
+            monsterBody.playSegments(
+                [state.frameCountBody, (state.frameCountBody += 3)],
+                true
+            );
+            monsterEyelids.playSegments(
+                [state.frameCountEyelids, (state.frameCountEyelids += 3)],
+                true
+            );
         }
     });
     // Input field de-selected.
