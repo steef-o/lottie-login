@@ -13,9 +13,9 @@ class Eye {
         this.cy = (this.boundingBox.bottom + this.boundingBox.top) / 2; // X offset (Y start value of new origin)
 
         // 1 = full movement, 2 = half movement, 3 = one third movement, 4 = one forth movement, etc.
-        this.degreeOfMovement = 3;
+        this.degreeOfMovement = 2;
 
-       /*
+        /*
         // ------ EXTRA VALUES IF NEEDED -----
         // start point values in percent
         this.cxPercent = (this.cx * 100 / window.innerWidth);
@@ -26,7 +26,7 @@ class Eye {
     }
 
     // finds rad angle for values outside eye apple to calculate where that delta (X & Y) points need to be on the bounding eye socket circle.
-    findAngle(x,y){
+    findAngle(x, y) {
         let angleRad = Math.atan2(y - this.cy, x - this.cx);
 
         const deltaX = this.boundingBox.width * Math.cos(angleRad);
@@ -36,23 +36,27 @@ class Eye {
     }
 
     // Finds new position based on origin of eye pupil and user (e.clientX & e.clientY) input.
-    findPosition(x,y){
+    findPosition(x, y) {
         let deltaX = x - this.cx;
         let deltaY = y - this.cy;
 
         // Check if value is inside eye apple
-        if(deltaX < this.boundingBox.width && deltaX > -this.boundingBox.width && deltaY < this.boundingBox.width && deltaY > -this.boundingBox.width){
+        if (
+            deltaX < this.boundingBox.width &&
+            deltaX > -this.boundingBox.width &&
+            deltaY < this.boundingBox.width &&
+            deltaY > -this.boundingBox.width
+        ) {
             this.updatePoint(deltaX, deltaY);
-
-        // Outside eye apple
-        }else {
+        } else {
+            // Outside eye apple
             this.findAngle(x, y);
         }
     }
 
-    updatePoint(deltaX, deltaY){
-
-        this.path.style.transform = `translate(${(deltaX / this.degreeOfMovement) + 'px'}, ${(deltaY / this.degreeOfMovement) + 'px'})`;
+    updatePoint(deltaX, deltaY) {
+        this.path.style.transform = `translate(${deltaX /
+            this.degreeOfMovement +
+            'px'}, ${deltaY / this.degreeOfMovement + 'px'})`;
     }
 }
-

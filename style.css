@@ -1,23 +1,20 @@
-
-.animation-wrapper{
-    position: relative;
+.animation-wrapper {
     height: 300px;
     justify-content: center;
     display: flex;
 }
+.button {
+    float: right;
+}
 
-#monster-body, #monster-eyelids, #monster-mouth{
+#monster-body,
+#monster-eyelids,
+#monster-mouth {
     position: absolute;
     margin: 0 auto;
     top: -50px;
 }
-#monster-eyelids, #monster-mouth{
+#monster-eyelids,
+#monster-mouth {
     z-index: 2;
-}
-
-
-.pupil path{
-
-    transform: translate(20px,20px);
-
 }
