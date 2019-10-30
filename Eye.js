@@ -1,3 +1,22 @@
+/*
+ * Class for moving a svg path around (translate) following the mouse cursor
+ * expects e.clientX and e.clientY from mousemove event listener.
+ *
+ * This class is design to contain the movement to a circle the size of the with of the group
+ * element the path is contained within, using the .getBoundingClientRect().width property.
+ *
+ * This class also supports a offset point for x and y (cx and cy) to move the origin
+ * from left = 0 top = 0 to whatever the new default path position you want.
+ *
+ * deltaX and deltaY positions are calculated relative to cx and cy.
+ *
+ * Feel free to mod this class to whatever functionality you need.
+ *
+ * used with lottie-web 5.5.9
+ * Created by: Steffen Andre Hagen @ Knowit Experience Bergen 2019
+ *
+ *  */
+
 class Eye {
     constructor(path) {
         this.path = path;
@@ -9,20 +28,18 @@ class Eye {
             width: path.getBoundingClientRect().width,
             height: path.getBoundingClientRect().height
         };
+        // Center new cx and cy point in container
         this.cx = (this.boundingBox.right + this.boundingBox.left) / 2; // X offset (X start value of new origin)
         this.cy = (this.boundingBox.bottom + this.boundingBox.top) / 2; // X offset (Y start value of new origin)
 
         // 1 = full movement, 2 = half movement, 3 = one third movement, 4 = one forth movement, etc.
         this.degreeOfMovement = 2;
 
-        /*
         // ------ EXTRA VALUES IF NEEDED -----
         // start point values in percent
-        this.cxPercent = (this.cx * 100 / window.innerWidth);
-        this.cyPercent = (this.cy * 100 / window.innerWidth);
-
-        this.radius = this.boundingBox.width / 2;
-        */
+        // this.cxPercent = (this.cx * 100 / window.innerWidth);
+        // this.cyPercent = (this.cy * 100 / window.innerWidth);
+        // this.radius = this.boundingBox.width / 2;
     }
 
     // finds rad angle for values outside eye apple to calculate where that delta (X & Y) points need to be on the bounding eye socket circle.
