@@ -6,12 +6,14 @@ const monsterMouthDiv = document.querySelector('#monster-mouth');
 // Get user input
 const username = document.querySelector('#username');
 const password = document.querySelector('#password');
+const form = document.querySelector('#form');
 
 const state = {
     frameCountBody: 1, // incl. eyes
     frameCountEyelids: 1,
     frameCountMouth: 1,
-    finish: true
+    finish: true,
+    animationActive: false
 };
 
 // Init animations
@@ -54,38 +56,42 @@ monsterBody.addEventListener('DOMLoaded', function() {
         let x = Math.floor(e.clientX);
         let y = Math.floor(e.clientY);
 
-        // Update eye positions
-        leftEye.findPosition(x, y);
-        rightEye.findPosition(x, y);
+        if (!state.animationActive) {
+            // Update eye positions
+            leftEye.findPosition(x, y);
+            rightEye.findPosition(x, y);
+        }
     });
     username.addEventListener('focus', function() {
+        state.animationActive = true;
         monsterBody.playSegments([0, 24], true);
         //Update State
         state.frameCountBody = 24;
     });
 
+    // Listen for user input
     username.addEventListener('keyup', function(e) {
         // Check if user inputs '@'
         if (e.key === 'AltGraph') {
             //Play happy mouth
             monsterMouth.playSegments([1, 2], true);
         } else if (e.key === 'Backspace') {
+            //rewind eyes.
             if (state.frameCountBody >= 3) {
                 monsterBody.playSegments(
                     [state.frameCountBody, (state.frameCountBody -= 3)],
                     true
                 );
             }
+            // rewind eyelids.
             if (state.frameCountEyelids >= 3) {
                 monsterEyelids.playSegments(
                     [state.frameCountEyelids, (state.frameCountEyelids -= 3)],
                     true
                 );
             }
-            console.log('eyelids', state.frameCountEyelids);
-            console.log('body', state.frameCountBody);
         } else {
-            // Play next frame.
+            // move eyes and eyelids forward.
             monsterBody.playSegments(
                 [state.frameCountBody, (state.frameCountBody += 3)],
                 true
@@ -98,6 +104,7 @@ monsterBody.addEventListener('DOMLoaded', function() {
     });
     // Input field de-selected.
     username.addEventListener('blur', function() {
+        state.animationActive = false;
         // Check if animation has reach halfway point, IF true, continue out animation ELSE rewind animation,
         if (state.frameCountBody / 144 >= 0.5) {
             monsterBody.playSegments([state.frameCountBody, 144], true);
@@ -111,6 +118,7 @@ monsterBody.addEventListener('DOMLoaded', function() {
     });
 
     password.addEventListener('focus', function() {
+        state.animationActive = true;
         if (!state.finish) {
             monsterBody.addEventListener('complete', function() {
                 monsterBody.playSegments([[144, 172], [172, 210]], true);
@@ -127,12 +135,14 @@ monsterBody.addEventListener('DOMLoaded', function() {
     });
 
     password.addEventListener('blur', function() {
+        state.animationActive = false;
         monsterBody.loop = false;
         // Check if animation has reach halfway point, IF true, continue out animation ELSE rewind animation,
         // .currenFrame gets the frame number at the current segment played
-        // Example: fram if segment is ([120, 130]) and we currently are on frame 124, .currentFrame will return 4
+        // Example: if segment is ([120, 130]) and we currently are on frame 124, .currentFrame will return 4
         if (state.frameCountBody / 20 >= 0.5) {
             monsterBody.playSegments(
+                // this segments start at frame 144, so we add it to the total to get correct frame in global scope.
                 [monsterBody.currentFrame + 144, 232],
                 true
             );
@@ -160,6 +170,7 @@ monsterBody.addEventListener('DOMLoaded', function() {
 }); // End - data_ready
 
 // prevent submit form.
-document.getElementById('form').addEventListener('submit', function(e) {
+
+form.addEventListener('submit', function(e) {
     e.preventDefault();
 });
